@@ -4,14 +4,18 @@
 
   <h1>Compose</h1>
 
-  <form action="/create" method="post" id="flashcard-inputs-form">
+  <form action="/create" method="post" id="flashcardInputsForm">
 
-    <% for(let i = 0; i < fields; i++) { %>
+    <div class="form-group">
+      <label for="libraryTitle">Library Title</label>
+      <input class="form-control" type="text" name="libraryTitle" value=""></input>
+    </div>
 
-    <div class="flashcard-inputs">
+    <div class="" id="inputContainer">
+
+    <div class="flashcard-inputs" id="input">
 
       <div class="form-group">
-        <h2><%= i + 1 + "." %></h2>
         <label for="questionInput">Question</label>
         <textarea class="form-control" name="questionInput" rows="1" cols="70"></textarea>
       </div>
@@ -28,34 +32,39 @@
 
     </div>
 
-    <%}%>
+      </div>
 
     <div class="row padding">
     <div class="col-8">
-      <button type="submit" name="createButton" class="btn btn-secondary btn-lg">Create</button>
+      <button type="submit" name="createButton" class="btn btn-secondary btn-lg" value="clicked">Create</button>
     </form>
     </div>
     <div class="col-2">
-      <form class="" action="/create" method="post">
-        <button class="btn btn-secondary btn-lg" type="submit" name="add" form="flashcard-inputs-form">+</button>
-      </form>
+
+        <button class="btn btn-secondary btn-lg" name="addInput" id="addInput">+</button>
+
     </div>
     <div class="col-2">
-      <form class="" action="/remove-field" method="post">
-        <button class="btn btn-secondary btn-lg" type="submit" name="remove">-</button>
-      </form>
+
+        <button class="btn btn-secondary btn-lg" name="removeInput" id="removeInput">-</button>
+
     </div>
   </div>
 
+  <script type="text/javascript">
 
+    $("#addInput").click(function(){
+      const div = document.getElementById('input');
+      const clone = div.cloneNode(true);
+      document.getElementById('inputContainer').appendChild(clone);
+    });
 
+    $("#removeInput").click(function(){
+      const div = document.getElementById('inputContainer');
+      div.removeChild(div.lastChild);
+    });
 
-
-
-
-
-
-
+  </script>
 
 </div>
 

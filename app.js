@@ -23,7 +23,6 @@ const port = 3000;
 // # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
 // # # # # # VARIABLES # # # # #
-var fields = 1;
 
 // # # # # # MONGOOS SCHEMAS # # # # #
 
@@ -70,9 +69,7 @@ app.get("/", function(req, res) {
 });
 
 app.get("/compose", function(req, res) {
-  res.render("compose", {
-    fields: fields
-  });
+  res.render("compose");
 });
 
 app.get("/libraries", function(req, res) {
@@ -83,42 +80,10 @@ app.get("/about", function(req, res) {
   res.render("about");
 });
 // # # # # # POST REQUESTS # # # # #
-app.post("/add-field", function(req, res) {
 
-  if (fields >= 1) {
-    const question = req.body
-
-
-    console.log("question: " + question);
-
-  }
-
-  ++fields;
-
-  res.render("compose", {
-    fields: fields
-  });
-
-});
-
-app.post("/remove-field", function(req, res) {
-
-  if (fields > 1) {
-    --fields;
-  }
-
-  console.log(fields);
-
-  res.render("compose", {
-    fields: fields
-  });
-
-});
 
 app.post("/create", function(req, res) {
 
-console.log("Button Pressed");
-console.log(req.body);
 
 });
 // # # # # # LISTEN REQUEST # # # # #
