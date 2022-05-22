@@ -4,10 +4,12 @@
 
   <h1>Compose</h1>
 
+  <hr>
+
   <form action="/create" method="post">
 
-    <div class="form-group">
-      <label for="libraryTitle">Library Title</label>
+    <div class="form-group libraryTitleInput">
+      <label for="libraryTitle">Library name</label>
       <input class="form-control" type="text" name="libraryTitle" required></input>
     </div>
 
@@ -51,18 +53,23 @@
     </div>
 
   <script type="text/javascript">
+    var inputCount = 1;
 
     $("#addInput").click(function(){
+
       const div = document.getElementById('input');
       const clone = div.cloneNode(true);
       document.getElementById('inputContainer').appendChild(clone);
+      inputCount++;
+
     });
 
     $("#removeInput").click(function(){
+      if (inputCount > 1) {
       const div = document.getElementById('inputContainer');
-
-      // add code to prevent user from deleting the last child div
       div.removeChild(div.lastChild);
+      inputCount--;
+    };
     });
 
   </script>

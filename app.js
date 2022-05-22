@@ -160,7 +160,6 @@ app.post("/create", async function(req, res) {
 
     }
 
-
     Library.find({}, await function(err, foundItems) {
 
       res.render("libraries", {
