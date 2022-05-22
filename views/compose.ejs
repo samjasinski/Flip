@@ -4,11 +4,11 @@
 
   <h1>Compose</h1>
 
-  <form action="/create" method="post" id="flashcardInputsForm">
+  <form action="/create" method="post">
 
     <div class="form-group">
       <label for="libraryTitle">Library Title</label>
-      <input class="form-control" type="text" name="libraryTitle" value=""></input>
+      <input class="form-control" type="text" name="libraryTitle" required></input>
     </div>
 
     <div class="" id="inputContainer">
@@ -17,17 +17,17 @@
 
       <div class="form-group">
         <label for="questionInput">Question</label>
-        <textarea class="form-control" name="questionInput" rows="1" cols="70"></textarea>
+        <textarea class="form-control" name="questionInput" rows="1" cols="70" required></textarea>
       </div>
 
       <div class="form-group">
         <label for="answerInput">Answer</label>
-        <textarea class="form-control" name="answerInput" rows="1" cols="70"></textarea>
+        <textarea class="form-control" name="answerInput" rows="1" cols="70" required></textarea>
       </div>
 
       <div class="form-group">
         <label for="hintInput">Hint</label>
-        <textarea class="form-control" name="hintInput" rows="1" cols="70"></textarea>
+        <textarea class="form-control" name="hintInput" rows="1" cols="70" required></textarea>
       </div>
 
     </div>
@@ -36,20 +36,19 @@
 
     <div class="row padding">
     <div class="col-8">
-      <button type="submit" name="createButton" class="btn btn-secondary btn-lg" value="clicked">Create</button>
+      <input type="submit" class="btn btn-secondary btn-lg" name="createButton" value="Create"></input>
     </form>
     </div>
     <div class="col-2">
 
-        <button class="btn btn-secondary btn-lg" name="addInput" id="addInput">+</button>
+        <button class="btn btn-secondary btn-lg"  id="addInput">+</button>
 
     </div>
     <div class="col-2">
 
-        <button class="btn btn-secondary btn-lg" name="removeInput" id="removeInput">-</button>
+        <button class="btn btn-secondary btn-lg" id="removeInput">-</button>
 
     </div>
-  </div>
 
   <script type="text/javascript">
 
@@ -61,12 +60,12 @@
 
     $("#removeInput").click(function(){
       const div = document.getElementById('inputContainer');
+
+      // add code to prevent user from deleting the last child div
       div.removeChild(div.lastChild);
     });
 
   </script>
-
-</div>
 
 
 <%- include("./partials/footer") -%>
