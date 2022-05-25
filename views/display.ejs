@@ -33,6 +33,11 @@
 
       <button class="btn btn-secondary btn-lg" id="flip-button" type="button" name="flip-button">FLIP!</button>
 
+      <h3 class="check hidden">How'd you go?</h3>
+
+      <button class="btn btn-secondary btn-lg check hidden" id="correct-button" type="button" >got it!</button>
+      <button class="btn btn-secondary btn-lg check hidden" id="incorrect-button" type="button" >not this time</button>
+
   </div>
 
 
@@ -41,10 +46,17 @@
   document.getElementById("flip-button").addEventListener("click", function(err) {
 
   const flashcards = document.querySelectorAll("[id=flashcard-inner]");
+  const check = document.querySelectorAll(".check");
 
   flashcards.forEach(function(flashcard) {
     flashcard.classList.toggle("flip");
-  })
+  });
+
+  check.forEach(function(element) {
+    element.classList.toggle("hidden");
+  });
+
+  this.classList.toggle("hidden");
 
   });
 </script>
