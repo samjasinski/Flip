@@ -1,0 +1,52 @@
+<%- include("./partials/header") -%>
+
+<h1><%=libraryName%></h1>
+
+<% flashcards.forEach(function(flashcard) {%>
+
+
+<div class="flashcard">
+  <div class="flashcard-inner" id="flashcard-inner">
+
+    <div class="card-face front">
+      <%= flashcard.question %>
+    </div>
+
+    <div class="card-face back">
+      <%= flashcard.answer %>
+    </div>
+
+  </div>
+
+</div>
+
+<%})%>
+
+
+  <!-- <div class="display-input-div">
+
+      <input id="userAnswer" type="text" value=""></input>
+
+  </div> -->
+
+  <div class="display-button-div">
+
+      <button class="btn btn-secondary btn-lg" id="flip-button" type="button" name="flip-button">FLIP!</button>
+
+  </div>
+
+
+<script type="text/javascript">
+
+  document.getElementById("flip-button").addEventListener("click", function(err) {
+
+  const flashcards = document.querySelectorAll("[id=flashcard-inner]");
+
+  flashcards.forEach(function(flashcard) {
+    flashcard.classList.toggle("flip");
+  })
+
+  });
+</script>
+
+<%- include("./partials/footer") -%>

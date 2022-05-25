@@ -1,28 +1,39 @@
 <%- include("./partials/header") -%>
 
-<h1>Library</h1>
+<h1>Libraries</h1>
 
 <% if (libraries == '' || null) { %>
 
 <h3>Opps... No libraries have been created yet.</h3>
 <h3>Go to the <a href="/compose">compose page</a> to get started!</h3>
 
+
 <%} else {%>
+
+
+
 <% libraries.forEach(function(entry){%>
 
-<div class="row">
+<% var count = 1; %>
 
-  <div class="col-4">
-    <h2> <%= entry.name %> </h2>
-  </div>
+<form class="" action="/display" method="post">
 
-  <div class="col-1">
-    <input type="checkbox" name="" value=""></input>
+<div class="container">
+  <div class="row">
+    <div class="col-4">
+      <button id="library-entry" class="library-entry" type="submit" value="<%= entry._id %>" name="id"><%= entry.name %></button>
+    </div>
   </div>
 
 </div>
 
+
+
+</form>
+
+
 <%})%>
+
 <%}%>
 
 

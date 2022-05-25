@@ -15,47 +15,45 @@
 
     <div class="" id="inputContainer">
 
-    <div class="flashcard-inputs" id="input">
+      <div class="flashcard-inputs" id="input">
 
-      <div class="form-group">
-        <label for="questionInput">Question</label>
-        <textarea class="form-control" name="questionInput" rows="1" cols="70" required></textarea>
-      </div>
+        <div class="form-group">
+          <label for="questionInput">Question</label>
+          <textarea class="form-control" name="questionInput" rows="1" cols="70" required></textarea>
+        </div>
 
-      <div class="form-group">
-        <label for="answerInput">Answer</label>
-        <textarea class="form-control" name="answerInput" rows="1" cols="70" required></textarea>
-      </div>
+        <div class="form-group">
+          <label for="answerInput">Answer</label>
+          <textarea class="form-control" name="answerInput" rows="1" cols="70" required></textarea>
+        </div>
 
-      <div class="form-group">
-        <label for="hintInput">Hint</label>
-        <textarea class="form-control" name="hintInput" rows="1" cols="70" required></textarea>
+        <div class="form-group">
+          <label for="hintInput">Hint</label>
+          <textarea class="form-control" name="hintInput" rows="1" cols="70" required></textarea>
+        </div>
+
       </div>
 
     </div>
 
-      </div>
+    <button class="btn btn-secondary btn-lg" id="addInput">+</button>
 
-    <div class="row padding">
-    <div class="col-8">
-      <input type="submit" class="btn btn-secondary btn-lg" name="createButton" value="Create"></input>
-    </form>
-    </div>
-    <div class="col-2">
+    <button class="btn btn-secondary btn-lg" id="removeInput">-</button>
 
-        <button class="btn btn-secondary btn-lg"  id="addInput">+</button>
+<div class="create-button-div">
+  <input  type="submit" class="btn btn-secondary btn-lg create-button" name="createButton" value="Create"></input>
+</div>
 
-    </div>
-    <div class="col-2">
 
-        <button class="btn btn-secondary btn-lg" id="removeInput">-</button>
+  </form>
 
-    </div>
+
+
 
   <script type="text/javascript">
     var inputCount = 1;
 
-    $("#addInput").click(function(){
+    $("#addInput").click(function() {
 
       const div = document.getElementById('input');
       const clone = div.cloneNode(true);
@@ -64,15 +62,14 @@
 
     });
 
-    $("#removeInput").click(function(){
+    $("#removeInput").click(function() {
       if (inputCount > 1) {
-      const div = document.getElementById('inputContainer');
-      div.removeChild(div.lastChild);
-      inputCount--;
-    };
+        const div = document.getElementById('inputContainer');
+        div.removeChild(div.lastChild);
+        inputCount--;
+      };
     });
-
   </script>
 
 
-<%- include("./partials/footer") -%>
+  <%- include("./partials/footer") -%>

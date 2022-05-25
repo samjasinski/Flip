@@ -43,16 +43,16 @@ body {
   color: #fdffa9;
 }
 
-.libraryTitleInput{
+.libraryTitleInput {
   padding: 15px;
   margin-top: 10px;
 }
 
 .flashcard-inputs {
-  border: 4px solid #11324D;
-  border-radius: 15px;
+  border: 2px solid #11324D;
+  border-radius: 16px;
   padding: 15px;
-  margin-top: 10px
+  margin: 20px
 }
 
 .padding {
@@ -60,9 +60,86 @@ body {
   padding-top: 20px
 }
 
+.library-entry {
+  font-size: 24pt;
+  color: #11324D;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+
+.library-entry:hover {
+  transform: scale(1.1);
+}
+
+.flashcard {
+  margin: 100px auto 0;
+  width: 600px;
+  height: 400px;
+  perspective: 1000px;
+}
+
+.flashcard-inner {
+  width: 100%;
+  height: 100%;
+  transition: transform 1s;
+  transform-style: preserve-3d;
+  cursor: pointer;
+  position: relative;
+}
+
+.flashcard-inner.flip {
+  transform: rotateY(-180deg);
+}
+
+.card-face {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  overflow: hidden;
+  border-radius: 16px;
+  box-shadow: 0px 3px 18px 3px rgba(0, 0, 0, 0.2);
+}
+
+.front {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.back {
+  transform: rotateY(-180deg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.create-button-div, .display-input-div, .display-button-div {
+text-align: center;
+}
+
+.display-input-div, .display-button-div {
+  padding-top: 40px;
+}
+
+
 /* IDS */
 #flip-icon {
   height: 65px;
   width: 65px;
   margin-left: 20px;
 }
+
+#userAnswer {
+  width: 600px;
+  border-radius: 8px;
+  border: 2px solid #11324D;
+}
+
+
+
+/* # # # # # # # # # # FLIPCARD CSS # # # # # # # # # # */
