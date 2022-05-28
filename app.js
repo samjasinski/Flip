@@ -170,7 +170,7 @@ app.post("/display", function(req, res) {
 
   Library.findById(req.body.id, function(err, library) {
 
-    res.render("display0", {
+    res.render("display", {
       libraryName: library.name,
       flashcards: library.flashcards
     })
