@@ -5,6 +5,8 @@ const ejs = require('ejs');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const _ = require('lodash');
+const bcrypt = require('bcrypt');
+
 var jsdom = require('jsdom');
 $ = require('jquery')(new jsdom.JSDOM().window);
 
@@ -20,12 +22,11 @@ app.use(express.static("public"));
 
 const port = 3000;
 
-mongoose.connect("mongodb://localhost:27017/flashcardsDB");
+mongoose.connect("mongodb://localhost:27017/flipDB");
 
 // # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
 // # # # # # FUNCTIONS # # # # #
-
 
 
 // # # # # # MONGOOS SCHEMAS # # # # #
@@ -61,14 +62,47 @@ const librarySchema = new mongoose.Schema({
   flashcards: [flashcardSchema]
 });
 
+const userSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true,
+    maxLength: 20,
+  },
+  email: {
+    type: String,
+    required: true,
+  },
+  password: {
+    type: String,
+    required: true,
+    minLength: 8
+  },
+  libraries: [librarySchema]
+})
+
 // # # # # # MONGOOSE MODELS # # # # #
 
 const Flashcard = mongoose.model("Flashcard", flashcardSchema);
 
 const Library = mongoose.model("Library", librarySchema);
 
+const User = mongoose.model("User", userSchema);
+
 // # # # # # GET REQUESTS # # # # #
-app.get("/", function(req, res) {
+
+app.get("/", function(req, res){
+  res.render("login");
+});
+
+app.get("/login", function(req, res){
+  res.render("login");
+});
+
+app.get("/register", function(req, res){
+  res.render("register");
+});
+
+app.get("/home", function(req, res) {
   res.render("home");
 });
 
@@ -99,6 +133,65 @@ app.get("/about", function(req, res) {
 
 // # # # # # POST REQUESTS # # # # #
 
+app.post("/login", function(req, res){
+  const email = req.body.userEmail;
+  const password = req.body.userPassword
+
+  // does the user exist in the DB?
+  User.findOne({email: email}, function(err, user){
+
+    try {
+      if (user == null) {
+        console.log("User does not exist")
+      } else {
+        console.log("Welcome " + user.name)
+      }
+    } catch (err) {
+      console.log(err)
+    }
+
+  });
+
+
+    // if yes
+    // does the hashed password match the password that was entered?
+
+        // yes - user logged in
+
+        // no - "Incorrect password" message
+
+    // if no
+    // "User does not exist" message
+
+
+});
+
+app.post("/register", async function(req, res){
+  const displayName = req.body.displayName;
+  const userEmail = req.body.userEmail;
+  const userPassword = req.body.userPassword
+
+  try {
+    // 10 is a good standard value to use here, makes it fairly secure while being quick
+    const hashedUserPassword = await bcrypt.hash(userPassword, 10);
+
+    const newUser = new User({
+      name: displayName,
+      email: userEmail,
+      password: hashedUserPassword,
+      libraries: []
+    });
+
+    newUser.save()
+
+    // user successfully created, redirecting to login page..
+    res.redirect("/login");
+
+  } catch (err) {
+    res.redirect("/register");
+  }
+});
+
 app.post("/create", function(req, res) {
 
   // waits for create button (now na <input>) to be clicked before running the following.
@@ -125,8 +218,6 @@ app.post("/create", function(req, res) {
       })
 
       flashcard.save();
-
-      console.log(flashcard);
 
       // add new flashcard to library
 

@@ -1,8 +1,12 @@
 <%- include("./partials/header") -%>
 
-<h1><%=libraryName%></h1>
+<h3><%=libraryName%></h3>
 
-<div class="flashcard">
+<section id="displaySection">
+
+<div id="flashcardDisplay">
+
+<div class="flashcard" id="flashcard">
   <div class="flashcard-inner" id="flashcardInner">
 
     <div id="cardFaceFront" class="card-face front">
@@ -29,7 +33,13 @@
 
 </div>
 
+</div>
+
 <script>
+  var correctCount = 0;
+  var incorrectCount = 0;
+  var totalNumberOfFlashcards = <%=flashcards.length%>;
+  var startTimer = new Date();
 
     // set the front and back values on page load
     async function display() {
@@ -40,11 +50,74 @@
       setTimeout(
       function(){
         document.getElementById('cardFaceBack').innerHTML = "<%=flashcard.answer%>"
-      }, 500)
+      }, 1000)
 
       await waitForClick();
     <%})%>
+
+      hideFlashcardDisplay();
+
+      stopwatch();
+
+      createStatsCard();
+
   }
+
+  function stopwatch() {
+    const endTimer = new Date();
+    const timeDiffms = Math.abs(endTimer - startTimer);
+    var seconds = timeDiffms / 1000;
+    const minutes = parseInt(seconds/60)
+    seconds = seconds % 60
+    return stopwatch = Math.floor(minutes) + " minutes & " + Math.floor(seconds) + " seconds." ;
+
+  }
+
+      function hideFlashcardDisplay() {
+        setTimeout(function(){
+          document.getElementById('flashcardDisplay').classList.add("hidden");
+        }, 500)
+      }
+
+      function createStatsCard() {
+        setTimeout(function(){
+          const statsCard = document.createElement("div");
+          statsCard.setAttribute("class", "statsCard");
+
+
+          const title = document.createElement("h4");
+          title.setAttribute("id", "statsTitle");
+          title.innerHTML = "Statistics";
+
+          const count = document.createElement("h4");
+          count.setAttribute("id", "statsCount");
+          count.innerHTML = "You got " + correctCount + " correct and " + incorrectCount + " incorrect." ;
+
+          const totalNumber = document.createElement("h4");
+          totalNumber.setAttribute("id", "statsTotal");
+          totalNumber.innerHTML = "Out of a total of " + totalNumberOfFlashcards
+
+          const timerBlurb = document.createElement("h4");
+          timerBlurb.setAttribute("id", "statsTimerBlurb");
+          timerBlurb.innerHTML = "You completed this library in:"
+
+          const timer = document.createElement("h4");
+          timer.setAttribute("id", "statsTimer");
+          timer.innerHTML = stopwatch;
+
+          statsCard.appendChild(title);
+          statsCard.appendChild(totalNumber);
+          statsCard.appendChild(count);
+          statsCard.appendChild(timerBlurb);
+          statsCard.appendChild(timer)
+
+          const flashcardDisplayDiv = document.getElementById("flashcardDisplay");
+
+          document.getElementById("displaySection").insertBefore(statsCard, flashcardDisplayDiv);
+
+        }, 500)
+
+      }
 
       function waitForClick() {
         return new Promise(function(resolve, reject){
@@ -60,7 +133,7 @@
 
         document.getElementById("displayButtonDiv").addEventListener("click", buttonPressHandler, false);
 
-          function flipAndHide() {
+      function flipAndHide() {
             document.getElementById('flashcardInner').classList.toggle("flip");
             document.getElementById('flipButton').classList.toggle("hidden");
             document.getElementById('correctButton').classList.toggle("hidden");
@@ -77,22 +150,34 @@
               // flip button actions
               if (clickedButton == "flipButton") {
                 flipAndHide();
+
               }
               else if (clickedButton == "correctButton") {
-                //alert("correct!");
-                flipAndHide();
+                correctCount++;
+                document.getElementById("flashcardInner").style["boxShadow"] = "0px 3px 18px 3px #00FFAB";
+                setTimeout(function(){
+                  document.getElementById("flashcardInner").style["boxShadow"] = "0px 3px 18px 3px rgba(0, 0, 0, 0.2)";
+                  flipAndHide();
+                }, 500)
 
               }
               else if (clickedButton == "incorrectButton") {
-                //alert("incorrect");
-                flipAndHide();
+                incorrectCount++;
+                document.getElementById("flashcardInner").style["boxShadow"] = "0px 3px 18px 3px #FF5B00";
+                setTimeout(function(){
+                  document.getElementById("flashcardInner").style["boxShadow"] = "0px 3px 18px 3px rgba(0, 0, 0, 0.2)";
+                  flipAndHide();
+                }, 500)
 
               }
             }
 
             element.stopPropagation();
           }
+
+// runs the display function which controls the forEach loop iteration over the flashcard array
 display();
+
 </script>
 
 <%- include("./partials/footer") -%>
