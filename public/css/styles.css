@@ -26,6 +26,10 @@ a:hover {
 }
 
 /* CLASSES */
+.errorText {
+  color: red;
+}
+
 .introduction {
   text-align: center;
 
