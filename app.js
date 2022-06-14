@@ -7,6 +7,12 @@ const bodyParser = require('body-parser');
 const _ = require('lodash');
 
 const bcrypt = require('bcrypt');
+const path = require('path');
+const expressSession = require('express-session');
+const passport = require('passport');
+const Auth0Stratergy = require('passport-auth0')
+
+require("dotenv").config();
 
 var jsdom = require('jsdom');
 $ = require('jquery')(new jsdom.JSDOM().window);

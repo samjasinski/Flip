@@ -25,15 +25,13 @@
 
   <button class="btn btn-secondary btn-lg" id="flipButton" type="button" >FLIP!</button>
 
+  <div class="popup" id="hintButton" onclick="hintPopup()"><p class="bi bi-question-circle-fill" id="hintIcon"><span class="popuptext" id="hintText"></span></p></div>
+
   <h3 id="checkMessage" class="hidden">How'd you go?</h3>
 
   <button class="btn btn-secondary btn-lg check hidden" id="correctButton" type="button">got it!</button>
 
   <button class="btn btn-secondary btn-lg check hidden" id="incorrectButton" type="button">not this time</button>
-
-</div>
-
-</div>
 
 <script>
   var correctCount = 0;
@@ -44,9 +42,11 @@
     // set the front and back values on page load
     async function display() {
     <%flashcards.forEach(function(flashcard) {%>
+
+      document.getElementById('hintText').innerHTML = "<%=flashcard.hint%>"
+
       document.getElementById('cardFaceFront').innerHTML = "<%=flashcard.question%>"
       // prevents the user from seeing the answer before flipping back over
-
       setTimeout(
       function(){
         document.getElementById('cardFaceBack').innerHTML = "<%=flashcard.answer%>"
@@ -139,6 +139,7 @@
             document.getElementById('correctButton').classList.toggle("hidden");
             document.getElementById('incorrectButton').classList.toggle("hidden");
             document.getElementById('checkMessage').classList.toggle("hidden");
+            document.getElementById('hintIcon').classList.toggle("hidden");
           }
 
           // a single event handler for all button inputs
@@ -177,6 +178,12 @@
 
 // runs the display function which controls the forEach loop iteration over the flashcard array
 display();
+
+// Show the flashcard hint when the ? icon is clicked
+function hintPopup() {
+  var popup = document.getElementById("hintText");
+  popup.classList.toggle("show");
+}
 
 </script>
 
