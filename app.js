@@ -10,10 +10,6 @@ const _ = require('lodash');
 const bcrypt = require('bcrypt');
 const app = express();
 const port = process.env.PORT || 3000; // added .env search for port before defaulting to 3000
-=======
-const app = express();
-const port = process.env.PORT || 3000; // added .env search for port before defaulting to 3000
->>>>>>> authCreation
 
 var jsdom = require('jsdom');
 $ = require('jquery')(new jsdom.JSDOM().window);
