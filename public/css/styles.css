@@ -8,7 +8,7 @@ body {
   min-height: 100%;
   min-height: 100vh;
   font-family: 'Montserrat', sans-serif;
-font-family: 'Ubuntu', sans-serif;
+  font-family: 'Ubuntu', sans-serif;
 }
 
 h2 {
@@ -206,6 +206,7 @@ text-align: center;
     perspective: 1000px;
 }
 
+<<<<<<< HEAD
 /* HINT POP-UP */
 
 /* Popup container */
@@ -260,6 +261,10 @@ text-align: center;
 @keyframes fadeIn {
   from {opacity: 0;}
   to {opacity:1 ;}
+=======
+.create-button-div {
+  padding-bottom: 100px;
+>>>>>>> authCreation
 }
 
 

@@ -1,23 +1,27 @@
 // # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
+require('dotenv').config();
+
 const express = require('express');
 const ejs = require('ejs');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const _ = require('lodash');
-
 const bcrypt = require('bcrypt');
+<<<<<<< HEAD
 const path = require('path');
 const expressSession = require('express-session');
 const passport = require('passport');
 const Auth0Stratergy = require('passport-auth0')
 
 require("dotenv").config();
+=======
+const app = express();
+const port = process.env.PORT || 3000; // added .env search for port before defaulting to 3000
+>>>>>>> authCreation
 
 var jsdom = require('jsdom');
 $ = require('jquery')(new jsdom.JSDOM().window);
-
-const app = express();
 
 app.set('view engine', 'ejs');
 
@@ -27,11 +31,7 @@ app.use(bodyParser.urlencoded({
 
 app.use(express.static("public"));
 
-const port = 3000;
-
 mongoose.connect("mongodb://localhost:27017/flipDB");
-
-// # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
 // # # # # # FUNCTIONS # # # # #
 
@@ -97,15 +97,15 @@ const User = mongoose.model("User", userSchema);
 
 // # # # # # GET REQUESTS # # # # #
 
-app.get("/", function(req, res){
+app.get("/", function(req, res) {
   res.render("login");
 });
 
-app.get("/login", function(req, res){
+app.get("/login", function(req, res) {
   res.render("login");
 });
 
-app.get("/register", function(req, res){
+app.get("/register", function(req, res) {
   res.render("register", {
     errorUserExists: "",
     displayName: "",
@@ -144,18 +144,39 @@ app.get("/about", function(req, res) {
 
 // # # # # # POST REQUESTS # # # # #
 
-app.post("/login", function(req, res){
+app.post("/login", function(req, res) {
   const email = req.body.userEmail;
   const password = req.body.userPassword
 
-  });
+  User.findOne({
+    email: email
+  }, function(err, foundUser) {
+    if (err) {
+      console.log(err)
+    } else { // if user is found
 
-app.post("/register", function(req, res){
+      // check user password matches
+      bcrypt.compare(password, foundUser.password, function(err, isMatch) {
+        if (err) {
+          throw err
+        } else if (!isMatch) {
+          console.log("Password doesn't match!")
+        } else {
+          console.log("Password matches!")
+        }
+      })
+    }
+  })
+});
+
+app.post("/register", function(req, res) {
   const displayName = req.body.displayName;
   const userEmail = req.body.userEmail;
   const userPassword = req.body.userPassword
 
-  User.findOne({email: userEmail}, async function(err, foundUser) {
+  User.findOne({
+    email: userEmail
+  }, async function(err, foundUser) {
 
     if (foundUser) {
 
@@ -184,7 +205,8 @@ app.post("/register", function(req, res){
 
     }
 
-})});
+  })
+});
 
 app.post("/create", function(req, res) {
 
@@ -237,7 +259,7 @@ app.post("/create", function(req, res) {
 
     // dodgy fix for libraries page loading before the library had been created
     // im sure i could use async here, just struggling to implement it...
-    setTimeout(function(){
+    setTimeout(function() {
 
       Library.find({}, function(err, foundItems) {
 
