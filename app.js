@@ -8,13 +8,8 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const _ = require('lodash');
 const bcrypt = require('bcrypt');
-<<<<<<< HEAD
-const path = require('path');
-const expressSession = require('express-session');
-const passport = require('passport');
-const Auth0Stratergy = require('passport-auth0')
-
-require("dotenv").config();
+const app = express();
+const port = process.env.PORT || 3000; // added .env search for port before defaulting to 3000
 =======
 const app = express();
 const port = process.env.PORT || 3000; // added .env search for port before defaulting to 3000
