@@ -17,6 +17,10 @@
       <!-- // placeholder -->
     </div>
 
+    <div id="hintDiv">
+      <h4><a class="hintPrompt bi bi-question-circle"><span class=hintText><%=flashcards.hint%></span></a></h4>
+    </div>
+
   </div>
 
 </div>
@@ -139,6 +143,7 @@
             document.getElementById('correctButton').classList.toggle("hidden");
             document.getElementById('incorrectButton').classList.toggle("hidden");
             document.getElementById('checkMessage').classList.toggle("hidden");
+            document.getElementById('hintDiv').classList.toggle("hidden");
           }
 
           // a single event handler for all button inputs
