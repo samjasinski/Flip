@@ -18,7 +18,13 @@
     </div>
 
     <div id="hintDiv">
-      <h4><a class="hintPrompt bi bi-question-circle"><span class=hintText><%=flashcards.hint%></span></a></h4>
+      <div class="popup" onclick="hintPopup()">
+        <a class="hintPrompt bi bi-question-circle" id="hintIcon">
+          <span class="popuptext" id="hintText">
+            <!-- populated by display() function -->
+          </span>
+        </a>
+      </div>
     </div>
 
   </div>
@@ -49,8 +55,10 @@
     async function display() {
     <%flashcards.forEach(function(flashcard) {%>
       document.getElementById('cardFaceFront').innerHTML = "<%=flashcard.question%>"
-      // prevents the user from seeing the answer before flipping back over
 
+      // populates the hint text
+      document.getElementById('hintText').innerHTML = "<%=flashcard.hint%>"
+      // prevents the user from seeing the answer before flipping back over
       setTimeout(
       function(){
         document.getElementById('cardFaceBack').innerHTML = "<%=flashcard.answer%>"
@@ -182,6 +190,11 @@
 
 // runs the display function which controls the forEach loop iteration over the flashcard array
 display();
+
+function hintPopup() {
+  var popup = document.getElementById("hintText");
+  popup.classList.toggle("show");
+}
 
 </script>
 
