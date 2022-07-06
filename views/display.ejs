@@ -18,7 +18,7 @@
     </div>
 
     <div id="hintDiv">
-      <div class="popup" onclick="hintPopup()">
+      <div class="popup" onmouseenter="hintPopup()" onmouseout="hintPopDown()">
         <a class="hintPrompt bi bi-question-circle" id="hintIcon">
           <span class="popuptext" id="hintText">
             <!-- populated by display() function -->
@@ -72,16 +72,6 @@
       stopwatch();
 
       createStatsCard();
-
-  }
-
-  function stopwatch() {
-    const endTimer = new Date();
-    const timeDiffms = Math.abs(endTimer - startTimer);
-    var seconds = timeDiffms / 1000;
-    const minutes = parseInt(seconds/60)
-    seconds = seconds % 60
-    return stopwatch = Math.floor(minutes) + " minutes & " + Math.floor(seconds) + " seconds." ;
 
   }
 
@@ -190,11 +180,6 @@
 
 // runs the display function which controls the forEach loop iteration over the flashcard array
 display();
-
-function hintPopup() {
-  var popup = document.getElementById("hintText");
-  popup.classList.toggle("show");
-}
 
 </script>
 

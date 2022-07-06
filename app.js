@@ -8,75 +8,22 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const _ = require('lodash');
 const bcrypt = require('bcrypt');
+const jsdom = require('jsdom');
+const userSchema = require('./models/user');
+const flashcardSchema = require('./models/flashcard');
+const librarySchema = require('./models/library');
+
 const app = express();
 const port = process.env.PORT || 3000; // added .env search for port before defaulting to 3000
-
-var jsdom = require('jsdom');
 $ = require('jquery')(new jsdom.JSDOM().window);
 
+app.use(express.static("public"));
 app.set('view engine', 'ejs');
-
 app.use(bodyParser.urlencoded({
   extended: true
 }));
 
-app.use(express.static("public"));
-
 mongoose.connect("mongodb://localhost:27017/flipDB");
-
-// # # # # # FUNCTIONS # # # # #
-
-
-// # # # # # MONGOOS SCHEMAS # # # # #
-
-const flashcardSchema = new mongoose.Schema({
-  question: {
-    type: String,
-    required: false,
-    maxLength: 500,
-    //minLength: 1
-  },
-  answer: {
-    type: String,
-    required: false,
-    maxLength: 500,
-    //minLength: 1
-  },
-  hint: {
-    type: String,
-    required: false,
-    maxLength: 200,
-    //minLength: 1
-  }
-});
-
-const librarySchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: true,
-    maxLength: 100,
-    minLength: 1
-  },
-  flashcards: [flashcardSchema]
-});
-
-const userSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: true,
-    maxLength: 20,
-  },
-  email: {
-    type: String,
-    required: true,
-  },
-  password: {
-    type: String,
-    required: true,
-    minLength: 8
-  },
-  libraries: [librarySchema]
-})
 
 // # # # # # MONGOOSE MODELS # # # # #
 
@@ -112,7 +59,9 @@ app.get("/compose", function(req, res) {
   res.render("compose");
 });
 
+// this is a route
 app.get("/libraries", function(req, res) {
+  //this is the controller
   Library.find({}, function(err, foundItems) {
     if (foundItems.length == 0) {
       res.render("libraries", {
@@ -125,8 +74,6 @@ app.get("/libraries", function(req, res) {
       });
     }
   });
-
-
 });
 
 app.get("/about", function(req, res) {
