@@ -12,7 +12,7 @@
 
   <div class="form-group">
     <label for="displayName">Display Name</label>
-    <input class="form-control" type="text" name="displayName" required value=<%=displayName%>></input>
+    <input maxlength="20" class="form-control" type="text" name="displayName" required value=<%=displayName%>></input>
   </div>
 
   <div class="form-group">
@@ -22,7 +22,7 @@
 
   <div class="form-group">
     <label for="userPassword">Password</label>
-    <input class="form-control" type="password" name="userPassword" required></input>
+    <input minlength="8" class="form-control" type="password" name="userPassword" required></input>
   </div>
 
   <div class="form-group">

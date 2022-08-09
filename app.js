@@ -12,6 +12,7 @@ const jsdom = require('jsdom');
 const userSchema = require('./models/user');
 const flashcardSchema = require('./models/flashcard');
 const librarySchema = require('./models/library');
+const session = require('express-session');
 
 const app = express();
 const port = process.env.PORT || 3000; // added .env search for port before defaulting to 3000
@@ -21,6 +22,12 @@ app.use(express.static("public"));
 app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({
   extended: true
+}));
+
+app.use(session({
+    secret: process.env.SECRET,
+    resave: false,
+    saveUninitialized: true
 }));
 
 mongoose.connect("mongodb://localhost:27017/flipDB");
@@ -36,11 +43,17 @@ const User = mongoose.model("User", userSchema);
 // # # # # # GET REQUESTS # # # # #
 
 app.get("/", function(req, res) {
-  res.render("login");
+  res.render("login", {
+    errorPasswordIncorrect: "",
+    userEmail: ""
+  });
 });
 
 app.get("/login", function(req, res) {
-  res.render("login");
+  res.render("login", {
+    errorPasswordIncorrect: "",
+    userEmail: ""
+  });
 });
 
 app.get("/register", function(req, res) {
@@ -52,7 +65,9 @@ app.get("/register", function(req, res) {
 });
 
 app.get("/home", function(req, res) {
-  res.render("home");
+  res.render("home", {
+    userName: req.session.user['name']
+  });
 });
 
 app.get("/compose", function(req, res) {
@@ -98,9 +113,17 @@ app.post("/login", function(req, res) {
         if (err) {
           throw err
         } else if (!isMatch) {
-          console.log("Password doesn't match!")
+          res.render("login", {
+            errorPasswordIncorrect: "Opps! Password does not match.",
+            userEmail: email
+          });
         } else {
-          console.log("Password matches!")
+          // logging user in...
+          req.session.user = foundUser;
+
+          res.render("home", {
+            userName: req.session.user['name']
+          });
         }
       })
     }
@@ -146,9 +169,9 @@ app.post("/register", function(req, res) {
   })
 });
 
-app.post("/create", function(req, res) {
+app.post("/create", async function(req, res) {
 
-  // waits for create button (now na <input>) to be clicked before running the following.
+  // waits for create button (now an <input>) to be clicked before running the following.
   // was setup like this as for an unknow reason the addButton was causing a post
   // to /create
 
@@ -160,7 +183,7 @@ app.post("/create", function(req, res) {
       name: req.body.libraryTitle,
       flashcards: []
     });
-    library.save();
+    await library.save();
 
     if (typeof req.body.questionInput == 'string') {
 
@@ -171,11 +194,11 @@ app.post("/create", function(req, res) {
         hint: req.body.hintInput
       })
 
-      flashcard.save();
+      await flashcard.save();
 
       // add new flashcard to library
 
-      library.flashcards.push(flashcard);
+      await library.flashcards.push(flashcard);
 
     } else {
 
@@ -188,9 +211,9 @@ app.post("/create", function(req, res) {
           hint: req.body.hintInput[i]
         });
 
-        flashcard.save();
+        await flashcard.save();
 
-        library.flashcards.push(flashcard);
+        await library.flashcards.push(flashcard);
 
       }
     }
@@ -220,7 +243,14 @@ app.post("/display", function(req, res) {
       flashcards: library.flashcards
     })
   });
+});
 
+app.post("/logout", (req, res, next)=>{
+  req.session.user = null;
+  res.render("login", {
+    errorPasswordIncorrect: "",
+    userEmail: ""
+  });
 });
 
 // # # # # # LISTEN REQUEST # # # # #
