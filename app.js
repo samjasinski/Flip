@@ -25,9 +25,9 @@ app.use(bodyParser.urlencoded({
 }));
 
 app.use(session({
-    secret: process.env.SECRET,
-    resave: false,
-    saveUninitialized: true
+  secret: process.env.SECRET,
+  resave: false,
+  saveUninitialized: true
 }));
 
 mongoose.connect("mongodb://localhost:27017/flipDB");
@@ -45,6 +45,7 @@ const User = mongoose.model("User", userSchema);
 app.get("/", function(req, res) {
   res.render("login", {
     errorPasswordIncorrect: "",
+    errorUserDoesNotExist: "",
     userEmail: ""
   });
 });
@@ -52,6 +53,7 @@ app.get("/", function(req, res) {
 app.get("/login", function(req, res) {
   res.render("login", {
     errorPasswordIncorrect: "",
+    errorUserDoesNotExist: "",
     userEmail: ""
   });
 });
@@ -74,21 +76,10 @@ app.get("/compose", function(req, res) {
   res.render("compose");
 });
 
-// this is a route
 app.get("/libraries", function(req, res) {
-  //this is the controller
-  Library.find({}, function(err, foundItems) {
-    if (foundItems.length == 0) {
       res.render("libraries", {
-        libraries: []
+        libraries: req.session.user['libraries']
       });
-
-    } else {
-      res.render("libraries", {
-        libraries: foundItems
-      });
-    }
-  });
 });
 
 app.get("/about", function(req, res) {
@@ -105,9 +96,16 @@ app.post("/login", function(req, res) {
     email: email
   }, function(err, foundUser) {
     if (err) {
-      console.log(err)
-    } else { // if user is found
-
+      console.log(err);
+    } else if (foundUser == null){
+      // no user was found
+      res.render("login", {
+        errorPasswordIncorrect: "",
+        errorUserDoesNotExist: "Opps! This email does not exist. Sign up below.",
+        userEmail: email
+      });
+    } else {
+      // if user is found
       // check user password matches
       bcrypt.compare(password, foundUser.password, function(err, isMatch) {
         if (err) {
@@ -115,6 +113,7 @@ app.post("/login", function(req, res) {
         } else if (!isMatch) {
           res.render("login", {
             errorPasswordIncorrect: "Opps! Password does not match.",
+            errorUserDoesNotExist: "",
             userEmail: email
           });
         } else {
@@ -216,7 +215,13 @@ app.post("/create", async function(req, res) {
         await library.flashcards.push(flashcard);
 
       }
-    }
+    };
+
+    // add library to users libraries array
+    await User.findByIdAndUpdate(
+      {_id: req.session.user['_id']},
+      {$push: {libraries: library}}
+    );
 
     // dodgy fix for libraries page loading before the library had been created
     // im sure i could use async here, just struggling to implement it...
@@ -245,10 +250,11 @@ app.post("/display", function(req, res) {
   });
 });
 
-app.post("/logout", (req, res, next)=>{
+app.post("/logout", (req, res, next) => {
   req.session.user = null;
   res.render("login", {
     errorPasswordIncorrect: "",
+    errorUserDoesNotExist: "",
     userEmail: ""
   });
 });
