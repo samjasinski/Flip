@@ -199,6 +199,8 @@ app.post("/create", async function(req, res) {
 
       await library.flashcards.push(flashcard);
 
+      await library.save();
+
     } else {
 
       // create multiple flashcards and add each to the library
@@ -215,6 +217,7 @@ app.post("/create", async function(req, res) {
         await library.flashcards.push(flashcard);
 
       }
+      await library.save();
     };
 
     // add library to users libraries array
@@ -223,25 +226,35 @@ app.post("/create", async function(req, res) {
       {$push: {libraries: library}}
     );
 
+    // the session data didn't seem to be updating when creating a new library
+    // so im getting the currently looged in users information from the mongodb
+    // and using it to refresh the list of user "libraries" that are displayed.
+    User.findOne({
+      email: req.session.user['email']
+    }, function(err, loggedInUser){
+      if (err) {
+        console.log(err);
+      } else {
+        req.session.user = loggedInUser
+      }
+    });
+
     // dodgy fix for libraries page loading before the library had been created
-    // im sure i could use async here, just struggling to implement it...
+    // im sure I could use async here, just struggling to implement it...
+
     setTimeout(function() {
 
-      Library.find({}, function(err, foundItems) {
-
         res.render("libraries", {
-          libraries: foundItems
+          libraries: req.session.user['libraries']
         });
-      });
 
     }, 1000)
-
   }
 });
 
 app.post("/display", function(req, res) {
 
-  Library.findById(req.body.id, function(err, library) {
+  Library.findById(req.body.libraryId, function(err, library) {
 
     res.render("display", {
       libraryName: library.name,

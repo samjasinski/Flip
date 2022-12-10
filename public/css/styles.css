@@ -79,7 +79,7 @@ a:hover {
   box-shadow: 0px 2px 10px 2px rgba(0, 0, 0, 0.2);
   border-radius: 16px;
   padding: 60px;
-  margin: 150px 20% 0 20%;
+  margin: 15% 20% 0 20%;
   position: static;
 }
 
@@ -275,6 +275,7 @@ text-align: center;
 }
 
 /* IDS */
+
 #FLIP-title {
     font-size: 15rem;
 }
